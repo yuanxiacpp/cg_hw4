@@ -15,7 +15,7 @@ CC = g++
 	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $<
 
 
-ALL.O =  matt.o figio.o 
+ALL.O =  matt.o figio.o matrix.o
 
 matt: $(ALL.O)
 	$(CC) $(CFLAGS) -o $@ $(ALL.O) $(INCLUDE) $(LIBDIR) $(LIBS)
