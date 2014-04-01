@@ -31,16 +31,11 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < w; i++) {
 	  int index = 4*(j*w+i);
 
-	  if (fg[index+3] < 128) {
-		output[index] = bg[index];
-		output[index+1] = bg[index+1];
-		output[index+2] = bg[index+2];
-	  }
-	  else {
-		output[index] = fg[index];
-		output[index+1] = fg[index+1];
-		output[index+2] = fg[index+2];
-	  }
+	  double alpha = fg[index+3] / 255.0;
+	  
+	  output[index] = fg[index] + (1-alpha)*bg[index];
+	  output[index+1] = fg[index+1] + (1-alpha)*bg[index+1];
+	  output[index+2] = fg[index+2] + (1-alpha)*bg[index+2];
 	  output[index+3] = 255;
 	  
 	}
