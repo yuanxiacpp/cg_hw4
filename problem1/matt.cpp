@@ -28,6 +28,8 @@ int main(int argc, char* argv[]) {
   unsigned char* c1 = readTiff(argv[3], w, h);
   unsigned char* c2 = readTiff(argv[4], w, h);
 
+  unsigned char* output = new unsigned char[w*h*4];
+
 
   for (int j = 0; j < h; j++) 
 	for (int i = 0; i < w; i++) {
@@ -63,22 +65,80 @@ int main(int argc, char* argv[]) {
 	  mat[15] = rk1*rk1 + gk1*gk1 + bk1*bk1 + rk2*rk2 + gk2*gk2 + bk2*bk2;	  
 
 
+	  /*
+	  for (int cc = 0; cc < 4; cc++) {
+		for (int dd = 0; dd < 4; dd++)
+		  cout << mat[cc*4+dd] << " ";
+		cout << endl;
+		
+	  }
+	  cout << endl << endl;
+	  */
+	  
 	  double mat_inv[16] = {0};
 	  double u[16] = {0};
 
 	  inv_double_gs(mat, 4, u, mat_inv); 
 
+	  
+	  
+	  
+	  //for (int cc = 0; cc < 4; cc++) {
+	  //	for (int dd = 0; dd < 4; dd++)
+	  //	  cout << mat_inv[cc*4+dd] << " ";
+	  //	cout << endl;
+	  //	
+	  //}
+	  //cout << endl << endl;
 
-
-
-	  int left[4] = {0};
+	  double left[4] = {0};
 	  left[0] = delta_r1 + delta_r2;
 	  left[1] = delta_g1 + delta_g2;
 	  left[2] = delta_b1 + delta_b2;
 	  left[3] = -(rk1 * delta_r1 + gk1*delta_g1 + bk1*delta_b1 + rk2*delta_r2 + gk2*delta_g2 + bk2*delta_b2);
+
+
+	  
+	  //for (int dx = 0; dx < 4; dx++)
+	  //	cout << left[dx] << " ";
+	  //cout << endl << endl;
+
+	  double *result = (double*)malloc(1*4*sizeof(double));
+
+	  memcpy(result, multiply(left, mat_inv, 1, 4, 4), 1*4*sizeof(double));
+
+	  //for (int dx = 0; dx < 4; dx++)
+	  //	cout << result[dx] << " ";
+	  //cout << endl << endl;
+
+
+	  for (int dx = 0; dx < 4; dx++) {
+		if (dx == 3)
+		  result[dx] *= 255;
+		unsigned char val = 0;
+		if (result[dx] < 0)
+		  val = 0;
+		else if (result[dx] > 255)
+		  val = 255;
+		else
+		  val = (unsigned char)result[dx];
+
+		//cout << (int)val << ", ";
+		output[index+dx] = val;
+	  }
+	  //cout << endl;
+
+	  //getchar();
 	  
 	}
 
+
+  
+  
+  if (!save_tiff_with_alpha(argv[5], output, w, h)) {
+	cerr << "Could not write output file " << argv[5] << endl;
+	return 1;
+  }
 
   
 
@@ -88,7 +148,7 @@ int main(int argc, char* argv[]) {
 
 
 unsigned char* readTiff(const char* filename, int &w, int &h) {
-  unsigned char* im = new unsigned char[max_w*max_h*3];
+  unsigned char* im = new unsigned char[max_w*max_h*4];
   if (!load_tiff_with_alpha(filename, im, w, h)) {
 	cout << "Could not read input file: " << filename << endl;
 	return NULL;

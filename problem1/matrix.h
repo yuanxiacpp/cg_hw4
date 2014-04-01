@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 
-
+void printMatrix(double *a, int n);
 void transpose(double *a, int n);
 
 double* multiply(double *a, double *b, int p, int q, int r);

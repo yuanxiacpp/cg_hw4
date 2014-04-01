@@ -2,7 +2,16 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-
+void printMatrix(double *a, int n) {
+  printf("***************** Matrix %d x %d *********************\n", n, n);
+  int i = 0;
+  for (i = 0; i < n * n; ++i) {
+    printf("%8.5f ", a[i]);
+    if ((i+1) % n == 0)
+      printf("\n");
+  }
+  return;
+}
 
 void transpose(double *a, int n) {
   int i, j;
@@ -158,8 +167,7 @@ void inv_double_gs(double *a, int n, double *u, double *b) {
 
   double* ut = (double*)malloc(n*n*sizeof(double));
   memcpy(ut, u, n*n*sizeof(double));
-
-  //transpose(ut, n);
+  transpose(ut, n);
 
   //printf("Verify U: \n");
   //printMatrix(multiply(u, ut, n, n, n), n);
@@ -177,29 +185,3 @@ void inv_double_gs(double *a, int n, double *u, double *b) {
   
   return;
 }
-/*void problem1(int n) {
-  srand(time(NULL));
-  
-  int i, j;
-
-  double *a = (double *)malloc(n*n*sizeof(double));
-  double *u = (double *)malloc(n*n*sizeof(double));
-  double *b = (double *)malloc(n*n*sizeof(double));
-
-  for (i = 0; i < n; i++)
-    for (j = 0; j < n; j++)
-      a[i*n+j] = (double)rand()/(double)RAND_MAX * 10;
-      //a[i*n+j] = rand() % 10;
-
-  //printMatrix(a, n);
-  
-  
-  inv_double_gs(a, n, u, b);
-
-}
-
-int main() {
-  problem1(5);
-  return 0;
-}
-*/
