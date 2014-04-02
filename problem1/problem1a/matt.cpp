@@ -5,6 +5,8 @@ using namespace std;
 #include <math.h>
 
 #include "figio.h"
+
+//api to handle matrix inverse and multiply. From hw assignment of numerical class
 #include "matrix.h"
 
 const unsigned int max_h = 10000;
