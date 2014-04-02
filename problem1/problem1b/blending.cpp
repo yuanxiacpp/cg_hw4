@@ -33,9 +33,9 @@ int main(int argc, char* argv[]) {
 
 	  double alpha = fg[index+3] / 255.0;
 	  
-	  output[index] = fg[index] + (1-alpha)*bg[index];
-	  output[index+1] = fg[index+1] + (1-alpha)*bg[index+1];
-	  output[index+2] = fg[index+2] + (1-alpha)*bg[index+2];
+	  output[index] = alpha*fg[index] + (1-alpha)*bg[index];
+	  output[index+1] = alpha*fg[index+1] + (1-alpha)*bg[index+1];
+	  output[index+2] = alpha*fg[index+2] + (1-alpha)*bg[index+2];
 	  output[index+3] = 255;
 	  
 	}
